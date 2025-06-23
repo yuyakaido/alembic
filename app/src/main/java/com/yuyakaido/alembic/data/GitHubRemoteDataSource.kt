@@ -18,4 +18,8 @@ object GitHubRemoteDataSource {
     suspend fun searchRepositories(query: String): Result<SearchRepositoryResponse> = runCatching {
         api.searchRepositories(query)
     }
+
+    suspend fun searchUsers(query: String): Result<SearchUserResponse> = runCatching {
+        api.searchUsers(query)
+    }
 }

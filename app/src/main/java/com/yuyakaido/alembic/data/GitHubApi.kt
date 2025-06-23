@@ -8,4 +8,9 @@ interface GitHubApi {
     suspend fun searchRepositories(
         @Query("q") query: String,
     ): SearchRepositoryResponse
+
+    @GET("search/users")
+    suspend fun searchUsers(
+        @Query("q") query: String,
+    ): SearchUserResponse
 }

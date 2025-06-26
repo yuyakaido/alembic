@@ -4,6 +4,7 @@ import com.yuyakaido.alembic.BuildConfig
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
@@ -19,6 +20,7 @@ object GitHubRemoteDataSource {
                     .build()
             )
         }
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
         .build()
     private val retrofit = Retrofit.Builder()
         .client(okHttpClient)

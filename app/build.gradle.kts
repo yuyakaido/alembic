@@ -44,6 +44,7 @@ dependencies {
 
     // Networking
     implementation(libs.kotlinx.serialization)
+    implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.serialization)
 

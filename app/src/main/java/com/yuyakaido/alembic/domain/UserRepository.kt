@@ -9,4 +9,11 @@ object UserRepository {
             .getOrThrow()
             .toUsers()
     }
+
+    suspend fun getMe(): Result<Me> = runCatching {
+        GitHubRemoteDataSource
+            .getMe()
+            .getOrThrow()
+            .toMe()
+    }
 }

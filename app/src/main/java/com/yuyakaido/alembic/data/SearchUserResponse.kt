@@ -8,16 +8,5 @@ import kotlinx.serialization.Serializable
 data class SearchUserResponse(
     @SerialName("items") val items: List<UserResponse>,
 ) {
-    fun toUsers(): List<User> = items.map {
-        User(
-            id = it.id,
-            name = it.login,
-        )
-    }
+    fun toUsers(): List<User> = items.map { it.toUser() }
 }
-
-@Serializable
-data class UserResponse(
-    @SerialName("id") val id: Long,
-    @SerialName("login") val login: String,
-)

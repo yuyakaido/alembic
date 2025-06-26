@@ -28,6 +28,7 @@ class MainViewModel : ViewModel() {
         when (tab) {
             MainTab.Repo -> updateRepoTab()
             MainTab.User -> updateUserTab()
+            MainTab.Me -> updateMeTab()
         }
     }
 
@@ -88,6 +89,34 @@ class MainViewModel : ViewModel() {
                 .onFailure {
                     _uiState.update {
                         it.copy(userTabState = it.userTabState.copy(isLoading = false))
+                    }
+                }
+        }
+    }
+
+    private fun updateMeTab() {
+        if (uiState.value.meTabState.isLoading) {
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(meTabState = it.meTabState.copy(isLoading = true))
+            }
+            UserRepository.getMe()
+                .onSuccess { me ->
+                    _uiState.update {
+                        it.copy(
+                            meTabState = it.meTabState.copy(
+                                isLoading = false,
+                                me = me,
+                            )
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update {
+                        it.copy(meTabState = it.meTabState.copy(isLoading = false))
                     }
                 }
         }

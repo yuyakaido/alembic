@@ -13,4 +13,7 @@ interface GitHubApi {
     suspend fun searchUsers(
         @Query("q") query: String,
     ): SearchUserResponse
+
+    @GET("user")
+    suspend fun getMe(): UserResponse
 }

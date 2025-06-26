@@ -1,12 +1,14 @@
 package com.yuyakaido.alembic.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,8 +46,9 @@ internal fun MainScreen(
                         icon = {
                             Icon(
                                 imageVector = when (tab) {
-                                    MainTab.Repo -> Icons.Default.Home
-                                    MainTab.User -> Icons.Default.AccountCircle
+                                    MainTab.Repo -> Icons.Default.Storage
+                                    MainTab.User -> Icons.Default.People
+                                    MainTab.Me -> Icons.Default.AccountCircle
                                 },
                                 contentDescription = tab.name,
                             )
@@ -66,6 +69,7 @@ internal fun MainScreen(
             when (uiState.selectedTab) {
                 MainTab.Repo -> RepoTab(uiState.repoTabState)
                 MainTab.User -> UserTab(uiState.userTabState)
+                MainTab.Me -> MeTab(uiState.meTabState)
             }
         }
     }
@@ -124,5 +128,18 @@ private fun UserTab(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun MeTab(
+    uiState: MeTabState,
+    modifier: Modifier = Modifier,
+) {
+    val me = uiState.me ?: return
+    Column(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(text = me.name)
     }
 }

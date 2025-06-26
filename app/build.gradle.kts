@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -13,6 +15,14 @@ android {
         applicationId = "com.yuyakaido.alembic"
         minSdk = 24
         targetSdk = 35
+
+        val properties = Properties()
+        properties.load(rootProject.file("local.properties").inputStream())
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_PERSONAL_ACCESS_TOKEN",
+            value = "\"${properties["GITHUB_PERSONAL_ACCESS_TOKEN"]}\"",
+        )
     }
 
     kotlin {
@@ -20,6 +30,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -29,6 +40,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons)
 
     // Networking
     implementation(libs.kotlinx.serialization)

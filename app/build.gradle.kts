@@ -46,4 +46,7 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.serialization)
+
+    // Logging
+    implementation(libs.timber)
 }

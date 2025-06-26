@@ -43,6 +43,9 @@ dependencies {
     implementation(libs.androidx.compose.material.icons)
 
     // Networking
+    implementation(platform(libs.coil.bom))
+    implementation(libs.coil.compose)
+    implementation(libs.coil.okhttp)
     implementation(libs.kotlinx.serialization)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)

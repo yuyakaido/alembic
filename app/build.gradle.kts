@@ -20,8 +20,13 @@ android {
         properties.load(rootProject.file("local.properties").inputStream())
         buildConfigField(
             type = "String",
-            name = "GITHUB_PERSONAL_ACCESS_TOKEN",
-            value = "\"${properties["GITHUB_PERSONAL_ACCESS_TOKEN"]}\"",
+            name = "GITHUB_OAUTH_CLIENT_ID",
+            value = "\"${properties["GITHUB_OAUTH_CLIENT_ID"]}\"",
+        )
+        buildConfigField(
+            type = "String",
+            name = "GITHUB_OAUTH_CLIENT_SECRET",
+            value = "\"${properties["GITHUB_OAUTH_CLIENT_SECRET"]}\"",
         )
     }
 

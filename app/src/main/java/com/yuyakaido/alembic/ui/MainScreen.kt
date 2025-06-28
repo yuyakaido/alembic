@@ -1,5 +1,6 @@
 package com.yuyakaido.alembic.ui
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,6 +35,7 @@ import com.yuyakaido.alembic.R
 internal fun MainScreen(
     uiState: MainUiState,
     onClickTab: (tab: MainTab) -> Unit,
+    onClickAuth: (uri: Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -74,7 +77,10 @@ internal fun MainScreen(
             when (uiState.selectedTab) {
                 MainTab.Repo -> RepoTab(uiState.repoTabState)
                 MainTab.User -> UserTab(uiState.userTabState)
-                MainTab.Me -> MeTab(uiState.meTabState)
+                MainTab.Me -> MeTab(
+                    uiState = uiState.meTabState,
+                    onClickAuth = onClickAuth,
+                )
             }
         }
     }
@@ -139,19 +145,31 @@ private fun UserTab(
 @Composable
 private fun MeTab(
     uiState: MeTabState,
+    onClickAuth: (uri: Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val me = uiState.me ?: return
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        AsyncImage(
-            model = uiState.me.icon,
-            contentDescription = null,
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape),
-        )
-        Text(text = me.name)
+        when (val state = uiState.state) {
+            is MeTabState.State.Initial -> Unit
+            is MeTabState.State.NotSignedIn -> {
+                Button(
+                    onClick = { onClickAuth(state.uri) },
+                ) {
+                    Text(text = "Sign in with GitHub")
+                }
+            }
+            is MeTabState.State.SignedIn -> {
+                AsyncImage(
+                    model = state.me.icon,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                )
+                Text(text = state.me.name)
+            }
+        }
     }
 }

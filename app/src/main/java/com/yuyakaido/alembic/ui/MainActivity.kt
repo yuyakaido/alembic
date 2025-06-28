@@ -1,5 +1,6 @@
 package com.yuyakaido.alembic.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,9 +21,15 @@ class MainActivity : ComponentActivity() {
             AlembicTheme {
                 MainScreen(
                     uiState = uiState,
-                    onClickTab = viewModel::onClickTab,
+                    onClickTab = { viewModel.onClickTab(it) },
+                    onClickAuth = { startActivity(Intent(Intent.ACTION_VIEW, it)) }
                 )
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.data?.let { viewModel.onCompleteAuth(it) }
     }
 }

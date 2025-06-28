@@ -1,5 +1,6 @@
 package com.yuyakaido.alembic.ui
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yuyakaido.alembic.domain.RepoRepository
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.stateIn(
         scope = viewModelScope,
@@ -29,6 +31,16 @@ class MainViewModel : ViewModel() {
             MainTab.Repo -> updateRepoTab()
             MainTab.User -> updateUserTab()
             MainTab.Me -> updateMeTab()
+        }
+    }
+
+    fun onCompleteAuth(uri: Uri) {
+        viewModelScope.launch {
+            val code = uri.getQueryParameter("code") ?: return@launch
+            UserRepository.generateAccessToken(code)
+                .onSuccess {
+                    updateMeTab()
+                }
         }
     }
 
@@ -51,7 +63,7 @@ class MainViewModel : ViewModel() {
                             repoTabState = it.repoTabState.copy(
                                 isLoading = false,
                                 repos = repos,
-                            )
+                            ),
                         )
                     }
                 }
@@ -95,30 +107,44 @@ class MainViewModel : ViewModel() {
     }
 
     private fun updateMeTab() {
-        if (uiState.value.meTabState.isLoading) {
-            return
-        }
-
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(meTabState = it.meTabState.copy(isLoading = true))
-            }
-            UserRepository.getMe()
-                .onSuccess { me ->
+            when (uiState.value.meTabState.state) {
+                is MeTabState.State.Initial -> {
                     _uiState.update {
                         it.copy(
                             meTabState = it.meTabState.copy(
-                                isLoading = false,
-                                me = me,
-                            )
+                                state = MeTabState.State.NotSignedIn(
+                                    uri = UserRepository.getAuthUri(),
+                                ),
+                            ),
                         )
                     }
                 }
-                .onFailure {
-                    _uiState.update {
-                        it.copy(meTabState = it.meTabState.copy(isLoading = false))
+                is MeTabState.State.NotSignedIn -> {
+                    if (UserRepository.isSignedIn()) {
+                        UserRepository.getMe()
+                            .onSuccess { me ->
+                                _uiState.update {
+                                    it.copy(
+                                        meTabState = it.meTabState.copy(
+                                            state = MeTabState.State.SignedIn(me),
+                                        ),
+                                    )
+                                }
+                            }
+                            .onFailure {
+                                _uiState.update {
+                                    it.copy(
+                                        meTabState = it.meTabState.copy(
+                                            state = MeTabState.State.Initial,
+                                        ),
+                                    )
+                                }
+                            }
                     }
                 }
+                is MeTabState.State.SignedIn -> Unit
+            }
         }
     }
 }

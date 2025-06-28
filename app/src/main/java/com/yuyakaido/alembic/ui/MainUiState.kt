@@ -1,5 +1,6 @@
 package com.yuyakaido.alembic.ui
 
+import android.net.Uri
 import com.yuyakaido.alembic.domain.Me
 import com.yuyakaido.alembic.domain.Repo
 import com.yuyakaido.alembic.domain.User
@@ -22,6 +23,11 @@ data class UserTabState(
 )
 
 data class MeTabState(
-    val isLoading: Boolean = false,
-    val me: Me? = null,
-)
+    val state: State = State.Initial,
+) {
+    sealed class State {
+        data object Initial : State()
+        data class NotSignedIn(val uri: Uri) : State()
+        data class SignedIn(val me: Me) : State()
+    }
+}

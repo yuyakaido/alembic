@@ -3,17 +3,21 @@ android = "8.10.1"
 androidxActivityCompose = "1.10.1"
 androidxComposeBom = "2025.06.01"
 coil = "3.2.0"
+hilt = "2.56.2"
 kotlin = "2.1.21"
 kotlinxSerialization = "1.8.1"
+ksp = "2.1.21-2.0.2"
 okhttp = "4.12.0"
 retrofit = "3.0.0"
 timber = "5.0.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
@@ -23,6 +27,8 @@ androidx-compose-material-icons = { group = "androidx.compose.material", name = 
 coil-bom = { group = "io.coil-kt.coil3", name = "coil-bom", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

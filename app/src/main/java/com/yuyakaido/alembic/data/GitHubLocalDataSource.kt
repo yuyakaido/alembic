@@ -2,8 +2,11 @@ package com.yuyakaido.alembic.data
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object GitHubLocalDataSource {
+@Singleton
+class GitHubLocalDataSource @Inject constructor() {
 
     private val accessTokenStream = MutableStateFlow<String?>(null)
 

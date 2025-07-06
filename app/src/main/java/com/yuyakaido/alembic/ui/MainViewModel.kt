@@ -5,14 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yuyakaido.alembic.domain.RepoRepository
 import com.yuyakaido.alembic.domain.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repoRepository: RepoRepository,
+    private val userRepository: UserRepository,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.stateIn(
@@ -37,7 +43,7 @@ class MainViewModel : ViewModel() {
     fun onCompleteAuth(uri: Uri) {
         viewModelScope.launch {
             val code = uri.getQueryParameter("code") ?: return@launch
-            UserRepository.generateAccessToken(code)
+            userRepository.generateAccessToken(code)
                 .onSuccess {
                     updateMeTab()
                 }
@@ -56,7 +62,7 @@ class MainViewModel : ViewModel() {
             _uiState.update {
                 it.copy(repoTabState = it.repoTabState.copy(isLoading = true))
             }
-            RepoRepository.searchAndroidRepositories()
+            repoRepository.searchAndroidRepositories()
                 .onSuccess { repos ->
                     _uiState.update {
                         it.copy(
@@ -87,7 +93,7 @@ class MainViewModel : ViewModel() {
             _uiState.update {
                 it.copy(userTabState = it.userTabState.copy(isLoading = true))
             }
-            UserRepository.searchUsers()
+            userRepository.searchUsers()
                 .onSuccess { users ->
                     _uiState.update {
                         it.copy(
@@ -114,15 +120,15 @@ class MainViewModel : ViewModel() {
                         it.copy(
                             meTabState = it.meTabState.copy(
                                 state = MeTabState.State.NotSignedIn(
-                                    uri = UserRepository.getAuthUri(),
+                                    uri = userRepository.getAuthUri(),
                                 ),
                             ),
                         )
                     }
                 }
                 is MeTabState.State.NotSignedIn -> {
-                    if (UserRepository.isSignedIn()) {
-                        UserRepository.getMe()
+                    if (userRepository.isSignedIn()) {
+                        userRepository.getMe()
                             .onSuccess { me ->
                                 _uiState.update {
                                     it.copy(

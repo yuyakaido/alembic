@@ -6,8 +6,10 @@ import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
 import com.yuyakaido.alembic.BuildConfig
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@HiltAndroidApp
 class AlembicApp : Application() {
 
     private val activityLifecycleLogger = ActivityLifecycleLogger()

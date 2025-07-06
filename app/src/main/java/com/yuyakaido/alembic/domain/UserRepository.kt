@@ -3,25 +3,29 @@ package com.yuyakaido.alembic.domain
 import android.net.Uri
 import com.yuyakaido.alembic.data.GitHubLocalDataSource
 import com.yuyakaido.alembic.data.GitHubRemoteDataSource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object UserRepository {
+@Singleton
+class UserRepository @Inject constructor(
+    private val remote: GitHubRemoteDataSource,
+    private val local: GitHubLocalDataSource,
+) {
 
-    fun getAuthUri(): Uri = GitHubRemoteDataSource.getAuthUri()
+    fun getAuthUri(): Uri = remote.getAuthUri()
 
-    fun isSignedIn(): Boolean = getAccessToken() != null
-
-    fun getAccessToken(): String? = GitHubLocalDataSource.getAccessToken()
+    fun isSignedIn(): Boolean = local.getAccessToken() != null
 
     suspend fun generateAccessToken(code: String): Result<Unit> = runCatching {
-        val accessToken = GitHubRemoteDataSource.generateAccessToken(code).getOrThrow().accessToken
-        GitHubLocalDataSource.updateAccessToken(accessToken)
+        val accessToken = remote.generateAccessToken(code).getOrThrow().accessToken
+        local.updateAccessToken(accessToken)
     }
 
     suspend fun searchUsers(): Result<List<User>> = runCatching {
-        GitHubRemoteDataSource.searchUsers(query = "android").getOrThrow().toUsers()
+        remote.searchUsers(query = "android").getOrThrow().toUsers()
     }
 
     suspend fun getMe(): Result<Me> = runCatching {
-        GitHubRemoteDataSource.getMe().getOrThrow().toMe()
+        remote.getMe().getOrThrow().toMe()
     }
 }

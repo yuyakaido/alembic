@@ -1,12 +1,14 @@
 package com.yuyakaido.alembic.domain
 
 import com.yuyakaido.alembic.data.GitHubRemoteDataSource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object RepoRepository {
+@Singleton
+class RepoRepository @Inject constructor(
+    private val remote: GitHubRemoteDataSource
+) {
     suspend fun searchAndroidRepositories(): Result<List<Repo>> = runCatching {
-        GitHubRemoteDataSource
-            .searchRepositories(query = "android")
-            .getOrThrow()
-            .toRepos()
+        remote.searchRepositories(query = "android").getOrThrow().toRepos()
     }
 }

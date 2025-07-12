@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.protobuf)
 }
 
 android {
@@ -42,10 +43,26 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     // AndroidX
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.dataStore)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons)
 
@@ -53,7 +70,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Networking
+    // Local Data
+    implementation(libs.protobuf.javalite)
+
+    // Remote Data
     implementation(platform(libs.coil.bom))
     implementation(libs.coil.compose)
     implementation(libs.coil.okhttp)

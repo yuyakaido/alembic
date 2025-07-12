@@ -2,12 +2,15 @@
 android = "8.11.1"
 androidxActivityCompose = "1.10.1"
 androidxComposeBom = "2025.06.01"
+androidxDataStore = "1.1.7"
 coil = "3.2.0"
 hilt = "2.56.2"
 kotlin = "2.2.0"
 kotlinxSerialization = "1.9.0"
 ksp = "2.2.0-2.0.2"
 okhttp = "5.1.0"
+protobuf = "4.31.1"
+protobufPlugin = "0.9.5"
 retrofit = "3.0.0"
 timber = "5.0.1"
 
@@ -18,12 +21,14 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended-android" }
+androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 coil-bom = { group = "io.coil-kt.coil3", name = "coil-bom", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp" }
@@ -31,6 +36,8 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }

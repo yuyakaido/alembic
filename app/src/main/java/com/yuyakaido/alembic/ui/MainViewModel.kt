@@ -116,14 +116,36 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             when (uiState.value.meTabState.state) {
                 is MeTabState.State.Initial -> {
-                    _uiState.update {
-                        it.copy(
-                            meTabState = it.meTabState.copy(
-                                state = MeTabState.State.NotSignedIn(
-                                    uri = userRepository.getAuthUri(),
+                    if (userRepository.isSignedIn()) {
+                        userRepository.getMe()
+                            .onSuccess { me ->
+                                _uiState.update {
+                                    it.copy(
+                                        meTabState = it.meTabState.copy(
+                                            state = MeTabState.State.SignedIn(me),
+                                        ),
+                                    )
+                                }
+                            }
+                            .onFailure {
+                                _uiState.update {
+                                    it.copy(
+                                        meTabState = it.meTabState.copy(
+                                            state = MeTabState.State.Initial,
+                                        ),
+                                    )
+                                }
+                            }
+                    } else {
+                        _uiState.update {
+                            it.copy(
+                                meTabState = it.meTabState.copy(
+                                    state = MeTabState.State.NotSignedIn(
+                                        uri = userRepository.getAuthUri(),
+                                    ),
                                 ),
-                            ),
-                        )
+                            )
+                        }
                     }
                 }
                 is MeTabState.State.NotSignedIn -> {

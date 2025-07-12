@@ -1,6 +1,6 @@
 package com.yuyakaido.alembic.domain
 
-import com.yuyakaido.alembic.data.GitHubLocalDataSource
+import com.yuyakaido.alembic.data.local.GitHubLocalDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -8,5 +8,5 @@ import javax.inject.Singleton
 class AccessTokenRepository @Inject constructor(
     private val local: GitHubLocalDataSource,
 ) {
-    fun getAccessToken(): String? = local.getAccessToken()
+    suspend fun getAccessToken(): String? = local.getAccessToken()
 }

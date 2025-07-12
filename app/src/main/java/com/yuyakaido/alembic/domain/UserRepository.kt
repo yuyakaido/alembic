@@ -1,7 +1,7 @@
 package com.yuyakaido.alembic.domain
 
 import android.net.Uri
-import com.yuyakaido.alembic.data.GitHubLocalDataSource
+import com.yuyakaido.alembic.data.local.GitHubLocalDataSource
 import com.yuyakaido.alembic.data.GitHubRemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +14,7 @@ class UserRepository @Inject constructor(
 
     fun getAuthUri(): Uri = remote.getAuthUri()
 
-    fun isSignedIn(): Boolean = local.getAccessToken() != null
+    suspend fun isSignedIn(): Boolean = local.getAccessToken() != null
 
     suspend fun generateAccessToken(code: String): Result<Unit> = runCatching {
         val accessToken = remote.generateAccessToken(code).getOrThrow().accessToken

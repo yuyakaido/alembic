@@ -1,4 +1,4 @@
-package com.yuyakaido.alembic.data
+package com.yuyakaido.alembic.data.remote
 
 import androidx.core.net.toUri
 import com.yuyakaido.alembic.domain.Me

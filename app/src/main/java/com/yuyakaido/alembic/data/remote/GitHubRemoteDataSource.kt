@@ -1,4 +1,4 @@
-package com.yuyakaido.alembic.data
+package com.yuyakaido.alembic.data.remote
 
 import android.net.Uri
 import androidx.core.net.toUri

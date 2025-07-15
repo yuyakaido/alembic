@@ -1,4 +1,4 @@
-package com.yuyakaido.alembic.data
+package com.yuyakaido.alembic.data.remote
 
 import retrofit2.http.POST
 import retrofit2.http.Query

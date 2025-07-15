@@ -1,4 +1,4 @@
-package com.yuyakaido.alembic.data
+package com.yuyakaido.alembic.data.remote
 
 import com.yuyakaido.alembic.domain.Repo
 import kotlinx.serialization.SerialName

@@ -1,4 +1,4 @@
-package com.yuyakaido.alembic.data
+package com.yuyakaido.alembic.data.remote
 
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object RemoteDataModule {
 
     @Provides
     fun providesOkHttpClient(

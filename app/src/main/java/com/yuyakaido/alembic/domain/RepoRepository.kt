@@ -1,6 +1,6 @@
 package com.yuyakaido.alembic.domain
 
-import com.yuyakaido.alembic.data.GitHubRemoteDataSource
+import com.yuyakaido.alembic.data.remote.GitHubRemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
